@@ -1,7 +1,7 @@
 # CS30 Work
 
 ## Demos
-- add them here
+- [Scope](scope)
 
 ## Assignments
-- add here
+- [Interactive Scene](interactive-scene)
