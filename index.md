@@ -1,7 +1,7 @@
 # CS30 Work
 
 ## Demos
-- [Scope](scope)
+- [Scope](02-scope)
 -[Image Demo](03-images)
 
 ## Assignments
