@@ -5,7 +5,8 @@
 // Extra for Experts:
 // I have used a html element, "style". It lets me style the text inside the button.
 
-
+// notes for self.
+// reduce variables
 let w;
 let h;
 let x;
@@ -64,37 +65,37 @@ function keyPressed() {
   let c = random(['red', 'yellow', 'blue', 'black', 'green', 'pink']);
   let starting = random(0, height/2);
   let secondStarting = random(height/2, height)
-  w = random(10, 50);
-  h = random(10, 50);
-  d = random(10, 50);
-  side = random(10, 50);
-  r = rect(x, y, w, h);
-  C = circle(x, y, d);
-  s = square(x, y, side);
-  let shapes = random([r, C, s]);  
+  // w = random(10, 50);
+  // h = random(10, 50);
+  // d = random(10, 50);
+  // side = random(10, 50);
+  // r = rect(x, y, w, h);
+  // C = circle(x, y, d);
+  // s = square(x, y, side);
+  // let shapes = random([r, C, s]);  
   
   if (key === 'w') {
     for (let y = starting; y > 0; y -= h) {
       fill(c);
-      shapes();
+      rect(x, y, w, h);
     }
   }
   if (key === 'a') {
     for (let x = starting; x > 0; x -= w) {
       fill(c);
-      shapes();
+      rect(x, y, w, h);
     }
   }
   if (key === 's') {
     for (let y = secondStarting; y < height; y += h) {
       fill(c);
-      shapes();
+      rect(x, y, w, h);
     }
   }
   if (key === 'd') {
     for (let x = secondStarting; x < width; x += w) {
       fill(c);
-      shapes();
+      rect(x, y, w, h);
     }
   }
 }
