@@ -5,22 +5,27 @@
 // Extra for Experts:
 // I have used a html element, "style". It lets me style the text inside the button.
 
-// notes for self.
-// reduce variables
-let w;
-let h;
+
+// Notes for self
+// fix the code so the keyboard only works after pressing the button.
+// Add a game name and its purpose.
+// add a code so when the opposite color rectangle is over the other, the game ends.
+
+
+
+
+let w = 100;
+let h = 50;
 let x;
 let y;
-let d;
-let side;
 let button;
-let s;
-let C;
-let r;
+let c;
+
 
 function setup() { 
   homeScreen(); 
   background(200, 0, 100); 
+  stroke(255);
 }
 
 function draw() {  
@@ -29,72 +34,61 @@ function draw() {
 function homeScreen() {
   let cnv = createCanvas(windowWidth / 2, windowHeight);
   cnv.position(width / 2);
-  cnv.mouseOver(randomColor);
   
-  //   creates the start button
+ //   creates the start button
   button = createButton("Start");
   x = 200;
   y = 100;
   
   button.position(windowWidth / 2 - (x / 2), height / 2 - (y / 2));
   button.size(x, y);
-  
-
   button.style('font-size', '70px');
   button.style('font-family', 'Roboto');
-  button.mousePressed(mainScreen);
+  button.mousePressed(mainScreen); 
 }
 
 function mainScreen() {
+  colorbutton = createButton("clear background");
+  colorbutton.position(width/2, height/2 + y);
+  colorbutton.mousePressed(randomColor);
   button.hide();
-  background(0);
-  x = width / 2;
-  y = height / 2;
-  w = 100;
-  h = 50;
+  x = width / 2 - (w/2);
+  y = height / 2 - (h/2);
   keyPressed();
 }
 
 function randomColor() {
-  let c = random(['red', 'yellow', 'blue', 'black', 'green', 'pink']);
+  c = random(['red', 'yellow', 'blue', 'green', 'pink']);
   background(c);
-  button.style('color', c);
+  button.style('color', 'black');
 }
 
 function keyPressed() {
-  let c = random(['red', 'yellow', 'blue', 'black', 'green', 'pink']);
+  // c = random(['orange', 'purple', 'brown', 'black']);
   let starting = random(0, height/2);
-  let secondStarting = random(height/2, height)
-  // w = random(10, 50);
-  // h = random(10, 50);
-  // d = random(10, 50);
-  // side = random(10, 50);
-  // r = rect(x, y, w, h);
-  // C = circle(x, y, d);
-  // s = square(x, y, side);
-  // let shapes = random([r, C, s]);  
+  let secondStarting = random(height/2, height);
   
   if (key === 'w') {
-    for (let y = starting; y > 0; y -= h) {
-      fill(c);
+    for (let y = starting; y > 0; y -= h + w) {
+      fill('orange');
       rect(x, y, w, h);
     }
   }
   if (key === 'a') {
-    for (let x = starting; x > 0; x -= w) {
-      fill(c);
+    for (let x = starting; x > 0; x -= w + h) {
+      fill('orange');
       rect(x, y, w, h);
     }
   }
   if (key === 's') {
-    for (let y = secondStarting; y < height; y += h) {
-      fill(c);
+    for (let y = secondStarting; y < height; y += h + w) {
+      fill('purple');
       rect(x, y, w, h);
     }
   }
   if (key === 'd') {
-    for (let x = secondStarting; x < width; x += w) {
-      fill(c);
+    for (let x = secondStarting; x < width; x += w + h) {
+      fill('purple');
       rect(x, y, w, h);
     }
   }
