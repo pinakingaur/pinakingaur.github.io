@@ -3,7 +3,7 @@
 let monsterImg;
 
 function preload() {
-  monsterImg = loadImage("monster.jpg")
+  monsterImg = loadImage("monster.jpg");
 }
 
 function setup() {
