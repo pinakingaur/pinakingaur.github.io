@@ -5,20 +5,40 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-
+let mallImg;
 let homeImg;
+let button;
 
 function preload() {
   homeImg = loadImage("image.png");
+  mallImg = loadImage("mall.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  // button = createButton("Start");
+  // button.position(windowWidth / 2 - x / 2, height / 2 - y / 2);
+  // button.size(x, y);
+  // button.style('font-size', '70px');
+  // button.style('font-family', 'Roboto');
+  // button.mousePressed(victim);
+  button = createButton('Start'); 
 }
 
 function draw() {
-  background(220);
-  image(homeImg, 100, 100);
+  homeScreen();
+  
+}
+
+function homeScreen() {
+  image(homeImg, 0, 0, windowWidth, windowHeight);
+  button.position(windowWidth/2, windowHeight/2);
+  button.mousePressed(mainScreen);
+  homeScreen.hide();  
+}
+
+function mainScreen() {
+  image(mallImg, 0, 0, windowWidth, windowHeight);
 }
 
 function victim() {
@@ -32,7 +52,7 @@ function victim() {
 
 function evidence() {
   let evidence1 = {
-    object: random("antique watch", "blonde hair strands", "a broken gold chain"),
+    object: random("antique watch", "blonde hairs", "a broken gold chain"),
     theLocation: "First floor, near the elevator",
   };
   let evidence2 = {

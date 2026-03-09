@@ -23,7 +23,7 @@ function homeScreen() {
 
   //   creates the start buttom
   button = createButton("Start");
-  button.position(windowWidth / 2 - (x / 2), height / 2 - (y / 2));
+  button.position(windowWidth / 2 - x / 2, height / 2 - y / 2);
   button.size(x, y);
   button.style('font-size', '70px');
   button.style('font-family', 'Roboto');
@@ -45,8 +45,8 @@ function mainScreen() {
   colorbutton.position(width/2, height/2 + y);
   colorbutton.mousePressed(randomColor);
   button.hide();
-  x = width / 2 - (w/2);
-  y = height / 2 - (h/2);
+  x = width / 2 - w/2;
+  y = height / 2 - h/2;
   keyPressed();
 }
 
