@@ -5,9 +5,19 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+
+
+
+// NOTES
+// make a for loop to make it appear as if the circle is hopping around at the same x axis
+
 let mallImg;
 let homeImg;
 let button;
+let d = 200;
+let x = 600;
+let y = 600;
+
 
 function preload() {
   homeImg = loadImage("image.png");
@@ -23,11 +33,12 @@ function setup() {
   // button.style('font-family', 'Roboto');
   // button.mousePressed(victim);
   button = createButton('Start'); 
+  IntroButton = createButton('Learn what happended');
+  IntroButton.hide();
 }
 
 function draw() {
-  homeScreen();
-  
+  homeScreen(); 
 }
 
 function homeScreen() {
@@ -38,10 +49,21 @@ function homeScreen() {
 }
 
 function mainScreen() {
+  button.hide();
   image(mallImg, 0, 0, windowWidth, windowHeight);
+  IntroButton.show();
+  IntroButton.position(windowWidth/2, windowHeight/2);
+  IntroButton.mousePressed(victim);
 }
 
 function victim() {
+  IntroButton.hide();
+  for ( y = 600; y < 605; y++) {
+    for (y = 605; y > 600; y--) {
+      circle(x, y, d);
+    }
+  }
+  
   let theVictim = {
     name: "Joshua",
     age: 26,
