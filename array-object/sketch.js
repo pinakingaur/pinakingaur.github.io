@@ -41,8 +41,6 @@ function mouseClicked() {
 
 
 
-
-
 // function spawnBall(_x, _y) {
 //   let theBall = {
 //     x: _x,
