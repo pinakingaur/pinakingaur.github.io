@@ -11,20 +11,19 @@ let balls = [];
 let cueBall; 
 let aimLine; 
 const ballRadius = 20;
-const cueBallOrigin = 500;
-
-// hitbox
+const cueBallOrigin = 1000;
 const pocketToBallRatio = 4;
 const rim = 40; 
-
 let debugMode = false;
 
 class hitBox {
+  // makes the rectangles
   constructor(x, y, w, h) {
    this.x = x;
    this.y = y;
    this.w = w;
    this.h = h; 
+  //  centers
    let cx = x + w / 2;
    let cy = y + h / 2;
    this.body = Matter.Bodies.rectangle(cx, cy, w, h, {
@@ -34,9 +33,78 @@ class hitBox {
    }
   }
 
+  class Ball {
+    constructor(x, y, name) {
+      this.name = name;
+      // gives the balls physics
+      this.body = Matter.Bodies.circle(x, y, ballRadius, {
+        restitution: 0.9,
+        friction: 0.01,
+        density: 0.01
+      });
+      Matter.World.add(matter.world, this.body);
+    }
+    // ball positioning
+    x() {
+      return this.body.position.x;
+    }
+    y() {
+      return this.body.position.y;
+    }
+
+    // sets position
+    setPosition(x, y) {
+      Matter.Body.setPosition(this.body, { x, y});
+    }
+
+    // sets velocity
+    setVelocity(x, y) {
+      Matter.Body.setVelocity(this.body, { x, y});
+    }
+
+    // getting velocity
+    velocity() {
+      return new p5.Vector(this.body.velocity.x,
+    this.body.velocity.y);
+    }
+
+    // displays the ball
+    display() {
+      push();
+      translate(this.x(), this.y());
+      noStroke();
+      sphere(ballRadius);
+      pop();
+    }
+  }
+
+  function rackBalls() {
+    // draws the cue ball
+    cueBall = new Ball(cueBallOrigin, table.centerY(), "cue");
+    balls.push(cueBall);
+
+    // draws the pool balls in a triangle
+    const rackOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const footSpotX = 290;
+    const spacing = 2 * ballRadius + 3;
+    const xOffset = sqrt(3) * ballRadius;
+    let rowLength = 1;
+    let i = 0;
+    for (let row = 0; row < 5; row++) {
+      for (let col = 0; col < rowLength; col++) {
+        // let id = rackOrder[i];
+        let xPos = footSpotX - row * xOffset;
+        let yPos = table.centerY() - (rowLength - 1) * ballRadius + col * spacing;
+        balls.push(new Ball(xPos, yPos));
+        i++;
+      }
+      rowLength++
+    }
+  }
+
 // NEED help commenting
 const table = {
-  left: 35,
+  left: 35, 
   top: 300,
   right: 1121,
   bottom: 861,
@@ -52,6 +120,7 @@ const table = {
   centerY: function () {
     return this.top + this.tableHeight() / 2;
   },  
+  // makes the boundary lines on table
    boundariesLine: function () {
     this.boundaries = [
       new hitBox(this.left, this.top, this.tableWidth(), rim),
@@ -60,6 +129,7 @@ const table = {
       new hitBox(this.right, this.top, rim, this.tableHeight() + rim),
    ];
   },
+  // makes the pocket holes
   pocketHoles: function() {
     this.pockets = [
       createVector(59, 322),
@@ -72,8 +142,6 @@ const table = {
   },
 };
 
-
-// Preloading all the images used in the coding
 function preload() {
   poolImg = loadImage("table.png");
 }
@@ -83,8 +151,8 @@ function keyPressed() {
 }
 
 function drawDebug() {
+  // makes a visible table border
   if (!debugMode) return;
-
   push();
   stroke("blue");
   strokeWeight(3);
@@ -110,28 +178,24 @@ function drawDebug() {
 function setup() {
   createCanvas(1200, 1200, WEBGL);
    matter = Matter.Engine.create();
-  //  matter.world.gravity.y = 0;
+   matter.world.gravity.y = 0;
 
-  // table.updateBounds();
   table.boundariesLine();
   table.pocketHoles();
+
+  rackBalls();
   imageMode(CENTER);
   Matter.Runner.run(matter); 
 }
 
 function draw() {
   background(220);
-  
-  
-  // translate the origin back to 0,0
   translate(-width / 2,-height / 2);
-
-  // loads pool table
   image(poolImg, width/2, height/2, poolImg.width*4, poolImg.height*4);  
+
+  balls.forEach((ball) => {
+    ball.display();
+  });
 
   drawDebug();
 }
-
-
-
-
