@@ -5,19 +5,26 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+
+
+
+
+// notes for self
+// add color and number in balls class, after the name
+
 let poolImg;
 let matter;  
 let balls = [];
 let cueBall; 
 let aimLine; 
-const ballRadius = 20;
+const ballRadius = 12;
 const cueBallOrigin = 1000;
 const pocketToBallRatio = 4;
 const rim = 40; 
 let debugMode = false;
 let dragStart;
 
-class hitBox {
+class HitBox {
   // makes the rectangles
   constructor(x, y, w, h) {
    this.x = x;
@@ -65,8 +72,7 @@ class hitBox {
 
     // getting velocity
     velocity() {
-      return new p5.Vector(this.body.velocity.x,
-    this.body.velocity.y);
+      return new p5.Vector(this.body.velocity.x, this.body.velocity.y);
     }
 
     // displays the ball
@@ -85,7 +91,7 @@ class hitBox {
     balls.push(cueBall);
 
     // draws the pool balls in a triangle
-    const rackOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    // const rackOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const footSpotX = 290;
     const spacing = 2 * ballRadius + 3;
     const xOffset = sqrt(3) * ballRadius;
@@ -93,7 +99,6 @@ class hitBox {
     let i = 0;
     for (let row = 0; row < 5; row++) {
       for (let col = 0; col < rowLength; col++) {
-        // let id = rackOrder[i];
         let xPos = footSpotX - row * xOffset;
         let yPos = table.centerY() - (rowLength - 1) * ballRadius + col * spacing;
         balls.push(new Ball(xPos, yPos));
@@ -122,12 +127,12 @@ const table = {
     return this.top + this.tableHeight() / 2;
   },  
   // makes the boundary lines on table
-   boundariesLine: function () {
+  boundariesLine: function () {
     this.boundaries = [
-      new hitBox(this.left, this.top, this.tableWidth(), rim),
-      new hitBox(this.left, this.bottom, this.tableWidth(), rim),
-      new hitBox(this.left, this.top, rim, this.tableHeight()),
-      new hitBox(this.right, this.top, rim, this.tableHeight() + rim),
+      new HitBox(this.left, this.top, this.tableWidth(), rim),
+      new HitBox(this.left, this.bottom, this.tableWidth(), rim),
+      new HitBox(this.left, this.top, rim, this.tableHeight()),
+      new HitBox(this.right, this.top, rim, this.tableHeight() + rim),
    ];
   },
   // makes the pocket holes
@@ -140,6 +145,22 @@ const table = {
       createVector(591, 877),
       createVector(59, 877),
     ];
+  },
+  checkPockets: function () {
+    for (let i = balls.length - 1; i >= 0; i--) {
+      let ball = balls[i];
+      for (let pocket of table.pockets) {
+        let d = dist(ball.body.position.x, ball.body.position.y, pocket.x, pocket.y);
+        if (d < ballRadius * pocketToBallRatio) {
+          if (ball.name === "cue") {
+            resetCueBall();
+          } else {
+            Matter.World.remove(matter.world, ball.body);
+            balls.splice(i, 1);
+          }
+        }
+      }
+    }
   },
 };
 
@@ -158,7 +179,7 @@ function drawDebug() {
   stroke("blue");
   strokeWeight(3);
   let c = color("pink");
-  c.setAlpha(100),
+  c.setAlpha(100);
   fill(c);
   for (let b of table.boundaries) {
     rect(b.x, b.y, b.w, b.h);
@@ -188,7 +209,7 @@ function mousePressed() {
 function mouseReleased() {
   if (!dragStart) return;
   let force = p5.Vector.sub(dragStart, createVector(mouseX, mouseY));
-  force.mult(0.1); // Adjust force magnitude
+  force.mult(0.1);
   Matter.Body.setVelocity(cueBall.body, force);
   dragStart = null;
 }
@@ -200,6 +221,11 @@ function drawCueLine() {
   noStroke(0);
 }
 
+function resetCueBall() {
+  cueBall.setPosition(cueBallOrigin, table.centerY());
+  cueBall.setVelocity(0, 0);
+}
+
 function setup() {
   createCanvas(1200, 1200, WEBGL);
    matter = Matter.Engine.create();
@@ -207,21 +233,24 @@ function setup() {
 
   table.boundariesLine();
   table.pocketHoles();
-
   rackBalls();
+
   imageMode(CENTER);
   Matter.Runner.run(matter); 
 }
 
 function draw() {
+  Matter.Engine.update(matter);
   background(220);
-  translate(-width / 2,-height / 2);
+  translate(-width / 2, -height / 2);
   image(poolImg, width/2, height/2, poolImg.width*4, poolImg.height*4);  
 
   // Draw the balls
   balls.forEach((ball) => {
     ball.display();
   });
+
+  table.checkPockets();
 
   // Draw the cue
   if (dragStart) {
