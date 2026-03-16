@@ -15,6 +15,7 @@ const cueBallOrigin = 1000;
 const pocketToBallRatio = 4;
 const rim = 40; 
 let debugMode = false;
+let dragStart;
 
 class hitBox {
   // makes the rectangles
@@ -175,6 +176,30 @@ function drawDebug() {
   pop();
 }
 
+function mousePressed() {
+  if (!cueBall) return;
+  let nearCueBall =
+    dist(mouseX, mouseY, cueBall.body.position.x, cueBall.body.position.y) <= ballRadius * 2;
+  if (nearCueBall) {
+    dragStart = createVector(mouseX, mouseY);
+  }
+}
+
+function mouseReleased() {
+  if (!dragStart) return;
+  let force = p5.Vector.sub(dragStart, createVector(mouseX, mouseY));
+  force.mult(0.1); // Adjust force magnitude
+  Matter.Body.setVelocity(cueBall.body, force);
+  dragStart = null;
+}
+
+function drawCueLine() {
+  stroke("pink");
+  strokeWeight(4);
+  line(cueBall.body.position.x, cueBall.body.position.y, mouseX, mouseY);
+  noStroke(0);
+}
+
 function setup() {
   createCanvas(1200, 1200, WEBGL);
    matter = Matter.Engine.create();
@@ -193,9 +218,15 @@ function draw() {
   translate(-width / 2,-height / 2);
   image(poolImg, width/2, height/2, poolImg.width*4, poolImg.height*4);  
 
+  // Draw the balls
   balls.forEach((ball) => {
     ball.display();
   });
+
+  // Draw the cue
+  if (dragStart) {
+    drawCueLine();
+  }
 
   drawDebug();
 }
