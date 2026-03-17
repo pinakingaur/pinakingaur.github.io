@@ -27,88 +27,90 @@ let dragStart;
 class HitBox {
   // makes the rectangles
   constructor(x, y, w, h) {
-   this.x = x;
-   this.y = y;
-   this.w = w;
-   this.h = h; 
-  //  centers
-   let cx = x + w / 2;
-   let cy = y + h / 2;
-   this.body = Matter.Bodies.rectangle(cx, cy, w, h, {
-    isStatic: true,
-   });
-   Matter.World.add(matter.world, this.body);
-   }
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h; 
+    //  centers
+    let cx = x + w / 2;
+    let cy = y + h / 2;
+    this.body = Matter.Bodies.rectangle(cx, cy, w, h, {
+      isStatic: true,
+    });
+    Matter.World.add(matter.world, this.body);
+}
+}
+
+class Ball {
+  constructor(x, y, name) {
+    this.name = name;
+    // this.color = color;
+    // this.number = number;
+    // gives the balls physics
+    this.body = Matter.Bodies.circle(x, y, ballRadius, {
+      restitution: 0.9,
+      friction: 0.01,
+      density: 0.01
+    });
+    Matter.World.add(matter.world, this.body);
+  }
+  // ball positioning
+  x() {
+    return this.body.position.x;
+  }
+  y() {
+    return this.body.position.y;
   }
 
-  class Ball {
-    constructor(x, y, name) {
-      this.name = name;
-      // gives the balls physics
-      this.body = Matter.Bodies.circle(x, y, ballRadius, {
-        restitution: 0.9,
-        friction: 0.01,
-        density: 0.01
-      });
-      Matter.World.add(matter.world, this.body);
-    }
-    // ball positioning
-    x() {
-      return this.body.position.x;
-    }
-    y() {
-      return this.body.position.y;
-    }
-
-    // sets position
-    setPosition(x, y) {
-      Matter.Body.setPosition(this.body, { x, y});
-    }
-
-    // sets velocity
-    setVelocity(x, y) {
-      Matter.Body.setVelocity(this.body, { x, y});
-    }
-
-    // getting velocity
-    velocity() {
-      return new p5.Vector(this.body.velocity.x, this.body.velocity.y);
-    }
-
-    // displays the ball
-    display() {
-      push();
-      translate(this.x(), this.y());
-      noStroke();
-      sphere(ballRadius);
-      pop();
-    }
+  // sets position
+  setPosition(x, y) {
+    Matter.Body.setPosition(this.body, { x, y});
   }
 
-  function rackBalls() {
-    // draws the cue ball
-    cueBall = new Ball(cueBallOrigin, table.centerY(), "cue");
-    balls.push(cueBall);
-
-    // draws the pool balls in a triangle
-    // const rackOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    const footSpotX = 290;
-    const spacing = 2 * ballRadius + 3;
-    const xOffset = sqrt(3) * ballRadius;
-    let rowLength = 1;
-    let i = 0;
-    for (let row = 0; row < 5; row++) {
-      for (let col = 0; col < rowLength; col++) {
-        let xPos = footSpotX - row * xOffset;
-        let yPos = table.centerY() - (rowLength - 1) * ballRadius + col * spacing;
-        balls.push(new Ball(xPos, yPos));
-        i++;
-      }
-      rowLength++
-    }
+  // sets velocity
+  setVelocity(x, y) {
+    Matter.Body.setVelocity(this.body, { x, y});
   }
 
-// NEED help commenting
+  // getting velocity
+  velocity() {
+    return new p5.Vector(this.body.velocity.x, this.body.velocity.y);
+  }
+
+  // displays the ball
+  display() {
+    push();
+    translate(this.x(), this.y());
+    noStroke();
+    sphere(ballRadius);
+    pop();
+  }
+}
+
+function rackBalls() {
+  // draws the cue ball
+  cueBall = new Ball(cueBallOrigin, table.centerY(), "cue");
+  balls.push(cueBall);
+
+  // draws the pool balls in a triangle
+  // const rackOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  const footSpotX = 290;
+  const spacing = 2 * ballRadius + 3;
+  const xOffset = sqrt(3) * ballRadius;
+  let rowLength = 1;
+  let i = 0;
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < rowLength; col++) {
+      let xPos = footSpotX - row * xOffset;
+      let yPos = table.centerY() - (rowLength - 1) * ballRadius + col * spacing;
+      balls.push(new Ball(xPos, yPos));
+      i++;
+    }
+    rowLength++;
+  }
+}
+
+//Width between canvas and the table
 const table = {
   left: 35, 
   top: 300,
@@ -133,17 +135,17 @@ const table = {
       new HitBox(this.left, this.bottom, this.tableWidth(), rim),
       new HitBox(this.left, this.top, rim, this.tableHeight()),
       new HitBox(this.right, this.top, rim, this.tableHeight() + rim),
-   ];
+    ];
   },
   // makes the pocket holes
   pocketHoles: function() {
     this.pockets = [
-      createVector(59, 322),
-      createVector(591, 322),
-      createVector(1133, 322),
-      createVector(1133, 877),
-      createVector(591, 877),
-      createVector(59, 877),
+      createVector(59, 322),  //top - left pocket
+      createVector(591, 322), //top - middle pocket
+      createVector(1133, 322), //top - right pocket
+      createVector(1133, 877), //bottom - left pocket
+      createVector(591, 877), //bottom - middle pocket  
+      createVector(59, 877), //bottom - right pocket
     ];
   },
   checkPockets: function () {
@@ -154,7 +156,8 @@ const table = {
         if (d < ballRadius * pocketToBallRatio) {
           if (ball.name === "cue") {
             resetCueBall();
-          } else {
+          } 
+          else {
             Matter.World.remove(matter.world, ball.body);
             balls.splice(i, 1);
           }
@@ -169,7 +172,9 @@ function preload() {
 }
 
 function keyPressed() {
-  if (key === "d") debugMode = !debugMode;
+  if (key === "d") {
+    debugMode =! debugMode;
+}
 }
 
 function drawDebug() {
@@ -200,7 +205,7 @@ function drawDebug() {
 function mousePressed() {
   if (!cueBall) return;
   let nearCueBall =
-    dist(mouseX, mouseY, cueBall.body.position.x, cueBall.body.position.y) <= ballRadius * 2;
+      dist(mouseX, mouseY, cueBall.body.position.x, cueBall.body.position.y) <= ballRadius * 2;
   if (nearCueBall) {
     dragStart = createVector(mouseX, mouseY);
   }
@@ -213,6 +218,7 @@ function mouseReleased() {
   Matter.Body.setVelocity(cueBall.body, force);
   dragStart = null;
 }
+
 
 function drawCueLine() {
   stroke("pink");
@@ -241,7 +247,7 @@ function setup() {
 
 function draw() {
   Matter.Engine.update(matter);
-  background(220);
+  background(255);
   translate(-width / 2, -height / 2);
   image(poolImg, width/2, height/2, poolImg.width*4, poolImg.height*4);  
 
