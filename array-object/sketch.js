@@ -228,8 +228,8 @@ function resetCueBall() {
 
 function setup() {
   createCanvas(1200, 1200, WEBGL);
-   matter = Matter.Engine.create();
-   matter.world.gravity.y = 0;
+  matter = Matter.Engine.create();
+  matter.world.gravity.y = 0;
 
   table.boundariesLine();
   table.pocketHoles();
