@@ -3,14 +3,7 @@
 // March 5, 2026
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
-
-
-
-
-
-// notes for self
-// add color and number in balls class, after the name
+// I have added a library called Matter.js, and I also used the class variable.
 
 let poolImg;
 let matter;  
@@ -44,8 +37,7 @@ class HitBox {
 class Ball {
   constructor(x, y, name) {
     this.name = name;
-    // this.color = color;
-    // this.number = number;
+
     // gives the balls physics
     this.body = Matter.Bodies.circle(x, y, ballRadius, {
       restitution: 0.9,
@@ -93,7 +85,6 @@ function rackBalls() {
   balls.push(cueBall);
 
   // draws the pool balls in a triangle
-  // const rackOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const footSpotX = 290;
   const spacing = 2 * ballRadius + 3;
   const xOffset = sqrt(3) * ballRadius;
@@ -232,6 +223,16 @@ function resetCueBall() {
   cueBall.setVelocity(0, 0);
 }
 
+function limitBallSpeed(ball, maxSpeed = 30) {
+  let vel = ball.velocity();
+  let speed = vel.mag();
+
+  if (speed > maxSpeed) {
+    vel.normalize().mult(maxSpeed);
+    ball.setVelocity(vel.x, vel.y);
+  }
+}
+
 function setup() {
   createCanvas(1200, 1200, WEBGL);
   matter = Matter.Engine.create();
@@ -253,6 +254,7 @@ function draw() {
 
   // Draw the balls
   balls.forEach((ball) => {
+    limitBallSpeed(ball);
     ball.display();
   });
 
