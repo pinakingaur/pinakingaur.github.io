@@ -37,3 +37,10 @@ function showGrid() {
     }
   }
 }
+
+function changeColor() {
+  if (mouseIsPressed === true && theGrid[y][x] === 0) {
+    theGrid[y][x] === 1
+  }
+  
+}
