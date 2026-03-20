@@ -135,7 +135,7 @@ const table = {
       createVector(591, 322), //top - middle pocket
       createVector(1133, 322), //top - right pocket
       createVector(1133, 877), //bottom - left pocket
-      createVector(591, 877), //bottom - middle pocket  
+      createVector(595, 890), //bottom - middle pocket  
       createVector(59, 877), //bottom - right pocket
     ];
   },
