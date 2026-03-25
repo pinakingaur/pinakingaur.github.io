@@ -31,7 +31,7 @@ function keyPressed() {
 function displayGrid() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      grid[y][x]
+      grid[y][x];
     }
   }
 }
