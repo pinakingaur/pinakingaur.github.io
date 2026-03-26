@@ -6,24 +6,26 @@
 // - describe what you did to take this project "above and beyond"
 
 // create othello
-// const CELL_SIZE = 150;
+const WHITE_TILE = 0;
+const BLACK_TILE = 1;
+const BOARD = 5;
 let rows;
 let cols;
-let grid = [[0, 0, 0, 0, 0, 0, 0, 0], 
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0]];
-const CELL_SIZE = grid.length;
+let grid = [[5, 5, 5, 5, 5, 5, 5, 5], 
+              [5, 5, 5, 5, 5, 5, 5, 5],
+              [5, 5, 5, 5, 5, 5, 5, 5],
+              [5, 5, 5, 0, 1, 5, 5, 5],
+              [5, 5, 5, 1, 0, 5, 5, 5],
+              [5, 5, 5, 5, 5, 5, 5, 5],
+              [5, 5, 5, 5, 5, 5, 5, 5],
+              [5, 5, 5, 5, 5, 5, 5, 5]];
+const CELL_SIZE = 80;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  rows = Math.floor(CELL_SIZE);
-  cols = Math.floor(CELL_SIZE);
-  grid = generateEmptyGrid(cols, rows);
+  rows = Math.floor(8);
+  cols = Math.floor(8);
+  // grid = generateEmptyGrid(cols, rows);
 }
 
 function draw() {
@@ -39,45 +41,30 @@ function mousePressed() {
   toggleCell(x, y);
 }
 
-function keyPressed() {
-  if (key === "e") {
-    grid = generateEmptyGrid(cols, rows);
-  }
-}
-
 function toggleCell(x, y) {
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
-    if (grid[y][x] === 0) {
-      grid[y][x] = 1;
+    if (grid[y][x] === BOARD) {
+      grid[y][x] = BLACK_TILE;
     }
-    else if (grid[y][x] ===1) {
-      grid[y][x] = 0;
+    else if (grid[y][x] === BOARD) {
+      grid[y][x] = WHITE_TILE;
     }
-  }
-  
+  }  
 }
 
 function displayGrid() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      if (grid[y][x] === 0) {
+      if (grid[y][x] === WHITE_TILE) {
         fill("white");
       }
-      else if (grid[y][x] === 1) {
+      else if (grid[y][x] === BLACK_TILE) {
         fill("black");
+      }
+      else if (grid[y][x] === BOARD) {
+        fill("green");
       }
       square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
     }
   }
-}
-
-function generateEmptyGrid(cols, rows) {
-  let newGrid = [];
-  for (let y = 0; y < rows; y++) {
-    newGrid.push([]);
-    for (let x = 0; x < cols; x++) {
-      newGrid[y].push(0);
-    }
-  }
-  return newGrid;
 }
