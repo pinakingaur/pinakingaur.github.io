@@ -11,15 +11,17 @@ const BLACK_TILE = 1;
 const BOARD = 5;
 let rows;
 let cols;
-let grid = [[5, 5, 5, 5, 5, 5, 5, 5], 
-              [5, 5, 5, 5, 5, 5, 5, 5],
-              [5, 5, 5, 5, 5, 5, 5, 5],
-              [5, 5, 5, 0, 1, 5, 5, 5],
-              [5, 5, 5, 1, 0, 5, 5, 5],
-              [5, 5, 5, 5, 5, 5, 5, 5],
-              [5, 5, 5, 5, 5, 5, 5, 5],
-              [5, 5, 5, 5, 5, 5, 5, 5]];
+let grid = 
+  [[5, 5, 5, 5, 5, 5, 5, 5], 
+    [5, 5, 5, 5, 5, 5, 5, 5],
+    [5, 5, 5, 5, 5, 5, 5, 5],
+    [5, 5, 5, 0, 1, 5, 5, 5],
+    [5, 5, 5, 1, 0, 5, 5, 5],
+    [5, 5, 5, 5, 5, 5, 5, 5],
+    [5, 5, 5, 5, 5, 5, 5, 5],
+    [5, 5, 5, 5, 5, 5, 5, 5]];
 const CELL_SIZE = 80;
+let toggle = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -43,11 +45,13 @@ function mousePressed() {
 
 function toggleCell(x, y) {
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
-    if (grid[y][x] === BOARD) {
+    if (grid[y][x] === BOARD && toggle) {
       grid[y][x] = BLACK_TILE;
+      toggle = !toggle;
     }
     else if (grid[y][x] === BOARD) {
       grid[y][x] = WHITE_TILE;
+      toggle = !toggle;
     }
   }  
 }
@@ -65,6 +69,16 @@ function displayGrid() {
         fill("green");
       }
       square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+    }
+  }
+}
+
+function outflanked() {
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (BLACK_TILE < WHITE_TILE && BLACK_TILE > WHITE_TILE) {
+        toggle = true;
+      }
     }
   }
 }

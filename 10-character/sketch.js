@@ -67,7 +67,7 @@ function keyPressed() {
 function movePlayer(x, y) {
   if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE) {
     // keep track of where the player was
-    let oldX = thePlayer.x;
+    let oldX = sthePlayer.x;
     let oldY = thePlayer.y;
 
     // move player
