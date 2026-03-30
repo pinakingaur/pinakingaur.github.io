@@ -27,12 +27,13 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rows = Math.floor(8);
   cols = Math.floor(8);
-  // grid = generateEmptyGrid(cols, rows);
+  strokeWeight(3);
 }
 
 function draw() {
   background(220);
   displayGrid();
+  // console.log(mouseX, mouseY);
 }
 
 function mousePressed() {
@@ -41,6 +42,15 @@ function mousePressed() {
 
   // self
   toggleCell(x, y);
+  outFlanked();
+}
+
+function outFlanked() {
+  while ( rows > y && cols > x) {     
+    if (grid[y][x] === BLACK_TILE && grid[y-1][x] === WHITE_TILE && grid[y-2][x] === BLACK_TILE) {
+      grid[y-1][x] === BLACK_TILE;
+    }
+  }
 }
 
 function toggleCell(x, y) {
@@ -73,12 +83,3 @@ function displayGrid() {
   }
 }
 
-function outflanked() {
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      if (BLACK_TILE < WHITE_TILE && BLACK_TILE > WHITE_TILE) {
-        toggle = true;
-      }
-    }
-  }
-}
