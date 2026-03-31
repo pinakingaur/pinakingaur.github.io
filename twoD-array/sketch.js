@@ -33,7 +33,7 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
-  // console.log(mouseX, mouseY);
+  console.log(Math.floor(mouseX/CELL_SIZE), Math.floor(mouseY/CELL_SIZE));
 }
 
 function mousePressed() {
@@ -46,9 +46,11 @@ function mousePressed() {
 }
 
 function outFlanked() {
-  while ( rows > y && cols > x) {     
-    if (grid[y][x] === BLACK_TILE && grid[y-1][x] === WHITE_TILE && grid[y-2][x] === BLACK_TILE) {
-      grid[y-1][x] === BLACK_TILE;
+  for (let y = 0; y < rows; y++) {    
+    for (let x = 0; x < cols; x++) {
+      if (grid[4][3] === BLACK_TILE && grid[4][4] === WHITE_TILE && grid[4][5] === BOARD) {
+        grid[4][4] = BLACK_TILE;
+      }
     }
   }
 }
