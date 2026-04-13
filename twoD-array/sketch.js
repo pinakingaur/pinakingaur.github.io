@@ -31,9 +31,9 @@ function setup() {
 }
 
 function draw() {
-  background(220);
   displayGrid();
   console.log(Math.floor(mouseX/CELL_SIZE), Math.floor(mouseY/CELL_SIZE));
+  
 }
 
 function mousePressed() {
@@ -41,15 +41,19 @@ function mousePressed() {
   let y = Math.floor(mouseY/CELL_SIZE);
 
   // self
+  
   toggleCell(x, y);
   outFlanked();
+  
 }
 
 function outFlanked() {
   for (let y = 0; y < rows; y++) {    
     for (let x = 0; x < cols; x++) {
-      if (grid[4][3] === BLACK_TILE && grid[4][4] === WHITE_TILE && grid[4][5] === BOARD) {
-        grid[4][4] = BLACK_TILE;
+      // if (grid[4][3] === BLACK_TILE && grid[4][4] === WHITE_TILE && grid[5][4] === BLACK_TILE) {
+      //   grid[4][4] = BLACK_TILE;
+      if (grid[y][x-1] === BLACK_TILE && grid[y][x] === WHITE_TILE && grid[y+1][x] === BLACK_TILE) {
+        grid[y][x] = BLACK_TILE;
       }
     }
   }
