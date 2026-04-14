@@ -47,13 +47,15 @@ function mousePressed() {
   
 }
 
+// function error
 function outFlanked() {
-  for (let y = 0; y < rows; y++) {    
+  for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      // if (grid[4][3] === BLACK_TILE && grid[4][4] === WHITE_TILE && grid[5][4] === BLACK_TILE) {
-      //   grid[4][4] = BLACK_TILE;
       if (grid[y][x-1] === BLACK_TILE && grid[y][x] === WHITE_TILE && grid[y+1][x] === BLACK_TILE) {
         grid[y][x] = BLACK_TILE;
+      }
+      if (grid[y][x-1] === WHITE_TILE && grid[y][x] === BLACK_TILE && grid[y+1][x] === WHITE_TILE) {
+        grid[y][x] = WHITE_TILE;
       }
     }
   }
