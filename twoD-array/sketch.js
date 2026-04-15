@@ -24,6 +24,7 @@ const directions = [
 let grid = [];
 let currentPlayer = BLACK_TILE;
 let opponent;
+let gameRules;
 
 function setup() {
   createCanvas(cols * CELL_SIZE, rows * CELL_SIZE);
@@ -45,14 +46,30 @@ function setup() {
 
 function draw() {
   displayGrid();
-  
+  displayText();
+}
+
+function displayText() {
   fill(255);
+  textStyle("bold");
+  textSize(50);
+  textAlign(CENTER);
+  text("Othello", width/2, 50);
+
+  textSize(15);
+  gameRules = text(`GAME RULES: The Move: Players must place a disc on an empty square so 
+  that they outflank (sandwich), one or more of the opponent's discs.
+  that they outflank (sandwich), one or more of the opponent's discs
+  FLIPPING DISKS: All of the opponent's discs that are in a direct line 
+  (horizontal, vertical, or diagonal) between the newly placed disc.
+  and another of your own color are flipped to your color`, width/2, height/2 + 100);
+
   textSize(24);
   if (currentPlayer === BLACK_TILE) {
-    text("Turn: BLACK", 10, height - 20);
+    text("Turn: BLACK", width/2, height - 20);
   } 
   else {
-    text("Turn: WHITE", 10, height - 20);
+    text("Turn: WHITE", width/2, height - 20);
   }
 }
 
