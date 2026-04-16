@@ -56,14 +56,6 @@ function displayText() {
   textAlign(CENTER);
   text("Othello", width/2, 50);
 
-  textSize(15);
-  gameRules = text(`GAME RULES: The Move: Players must place a disc on an empty square so 
-  that they outflank (sandwich), one or more of the opponent's discs.
-  that they outflank (sandwich), one or more of the opponent's discs
-  FLIPPING DISKS: All of the opponent's discs that are in a direct line 
-  (horizontal, vertical, or diagonal) between the newly placed disc.
-  and another of your own color are flipped to your color`, width/2, height/2 + 100);
-
   textSize(24);
   if (currentPlayer === BLACK_TILE) {
     text("Turn: BLACK", width/2, height - 20);
