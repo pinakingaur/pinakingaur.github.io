@@ -58,7 +58,6 @@ function draw() {
   mousePressed();
 }
 
-
 function mousePressed() {
   for (let i = 0; i < NUMBER_OF_PARTICLES_PER_CLICK; i++) {
     let someFirework = new Particle(mouseX, mouseY);
