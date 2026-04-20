@@ -14,6 +14,7 @@
 - [Platformer](11-platformer-files)
 - [Walker OOP Demo](12-walker)
 - [Fireworks OOP Demo](13-fireworks)
+- [Ball OOP Demo](14-ball-oop)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
